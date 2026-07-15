@@ -1768,7 +1768,7 @@ namespace LuaPlayer
         uint16 currVal = ALE::CHECKVAL<uint16>(L, 4);
         uint16 maxVal = ALE::CHECKVAL<uint16>(L, 5);
 
-        player->SetSkill(id, currVal, maxVal, step);
+        player->SetSkill(id, step, currVal, maxVal);
         return 0;
     }
 
