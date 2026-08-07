@@ -23,6 +23,7 @@
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "ScriptedGossip.h"
+#include "Spell.h"
 
 class ALE_AllCreatureScript : public AllCreatureScript
 {
@@ -1002,7 +1003,8 @@ public:
         ALLSPELLHOOK_ON_DUMMY_EFFECT_ITEM,
         ALLSPELLHOOK_ON_CAST_CANCEL,
         ALLSPELLHOOK_ON_CAST,
-        ALLSPELLHOOK_ON_PREPARE
+        ALLSPELLHOOK_ON_PREPARE,
+        ALLSPELLHOOK_ON_SPELL_CHECK_CAST
     }) { }
 
     void OnDummyEffect(WorldObject* caster, uint32 spellID, SpellEffIndex effIndex, GameObject* gameObjTarget) override
@@ -1033,6 +1035,16 @@ public:
     void OnSpellPrepare(Spell* spell, Unit* caster, SpellInfo const* spellInfo) override
     {
         sALE->OnSpellPrepare(caster, spell, spellInfo);
+    }
+
+    void OnSpellCheckCast(Spell* spell, bool strict, SpellCastResult& res) override
+    {
+        if (res != SPELL_CAST_OK)
+            return;
+
+        SpellCastResult aleResult = sALE->OnSpellCheckCast(spell->GetCaster(), spell, spell->GetSpellInfo(), strict);
+        if (aleResult != SPELL_CAST_OK)
+            res = aleResult;
     }
 };
 

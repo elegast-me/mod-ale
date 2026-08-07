@@ -407,6 +407,7 @@ namespace Hooks
         SPELL_EVENT_ON_PREPARE                          = 1, // (event, caster, spell)
         SPELL_EVENT_ON_CAST                             = 2, // (event, caster, spell, skipCheck)
         SPELL_EVENT_ON_CAST_CANCEL                      = 3, // (event, caster, spell, bySelf)
+        SPELL_EVENT_ON_CHECK_CAST                       = 4, // (event, caster, spell, strict) - Can return SPELL_FAILED_* to block cast
         SPELL_EVENT_COUNT
     };
 

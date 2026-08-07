@@ -602,6 +602,7 @@ public:
     void OnSpellPrepare(Unit* caster, Spell* spell, SpellInfo const* spellInfo);
     void OnSpellCast(Unit* caster, Spell* spell, SpellInfo const* spellInfo, bool skipCheck);
     void OnSpellCastCancel(Unit* caster, Spell* spell, SpellInfo const* spellInfo, bool bySelf);
+    SpellCastResult OnSpellCheckCast(Unit* caster, Spell* spell, SpellInfo const* spellInfo, bool strict);
 
     /* AllCreature */
     void OnAllCreatureAddToWorld(Creature* creature);
