@@ -58,3 +58,31 @@ void ALE::OnSpellPrepare(Unit* caster, Spell* spell, SpellInfo const* spellInfo)
     CallAllFunctions(SpellEventBindings, key);
 }
 
+SpellCastResult ALE::OnSpellCheckCast(Unit* caster, Spell* spell, SpellInfo const* spellInfo, bool strict)
+{
+    START_HOOK_WITH_RETVAL(SPELL_EVENT_ON_CHECK_CAST, spellInfo->Id, SPELL_CAST_OK);
+    Push(caster);
+    Push(spell);
+    Push(strict);
+
+    int n = SetupStack(SpellEventBindings, key, 3);
+
+    while (n > 0)
+    {
+        int r = CallOneFunction(n--, 3, 1);
+
+        if (lua_isnumber(L, r))
+        {
+            SpellCastResult result = (SpellCastResult)CHECKVAL<uint32>(L, r);
+            lua_pop(L, 1);
+            CleanUpStack(3);
+            return result;
+        }
+
+        lua_pop(L, 1);
+    }
+
+    CleanUpStack(3);
+    return SPELL_CAST_OK;
+}
+
