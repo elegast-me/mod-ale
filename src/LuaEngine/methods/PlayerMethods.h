@@ -2986,6 +2986,17 @@ namespace LuaPlayer
             }
             player->ItemAddedQuestCheck(entry, 1);
             player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_RECEIVE_EPIC_ITEM, entry, 1);
+
+            // Item::CreateItem() does not register the item in the player's
+            // update queue (that only happens inside Item::SetState()) --
+            // unlike Player::StoreNewItem(), which the entry-based AddItem()
+            // binding above uses and which handles this internally. Without
+            // this, the equip below is real in-session (VisualizeItem sets
+            // m_items[slot] directly) but Player::_SaveInventory() iterates
+            // m_itemUpdateQueue, not m_items, so the item is silently never
+            // written to item_instance/character_inventory and is gone after
+            // the next login. See ElegastCore-Classless#240.
+            item->SetState(ITEM_NEW, player);
         }
         else
         {
