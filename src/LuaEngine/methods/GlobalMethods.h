@@ -2159,7 +2159,7 @@ namespace LuaGlobalFunctions
 
         CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
         uint8 addedItems = 0;
-        while (addedItems <= MAX_MAIL_ITEMS && i + 2 <= argAmount)
+        while (addedItems < MAX_MAIL_ITEMS && i + 2 <= argAmount)
         {
             uint32 entry = ALE::CHECKVAL<uint32>(L, ++i);
             uint32 amount = ALE::CHECKVAL<uint32>(L, ++i);
