@@ -733,6 +733,7 @@ ALERegister<Player> PlayerMethods[] =
     { "RemoveLifetimeKills", &LuaPlayer::RemoveLifetimeKills },
     { "ResurrectPlayer", &LuaPlayer::ResurrectPlayer },
     { "EquipItem", &LuaPlayer::EquipItem },
+    { "MoveItemToInventory", &LuaPlayer::MoveItemToInventory },
     { "ResetSpellCooldown", &LuaPlayer::ResetSpellCooldown },
     { "ResetTypeCooldowns", &LuaPlayer::ResetTypeCooldowns },
     { "ResetAllCooldowns", &LuaPlayer::ResetAllCooldowns },

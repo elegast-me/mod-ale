@@ -3279,6 +3279,46 @@ namespace LuaPlayer
     }
 
     /**
+     * Moves the given [Item] to an inventory/bag slot.
+     *
+     * @param [Item] item : item to move
+     * @param uint8 bag : bag to move the item to
+     * @param uint8 slot : slot in the bag to move the item to
+     * @return bool success : true if the item was moved, false otherwise
+     */
+    int MoveItemToInventory(lua_State* L, Player* player)
+    {
+        Item* item = ALE::CHECKOBJ<Item>(L, 2, false);
+        uint8 bag = ALE::CHECKVAL<uint8>(L, 3);
+        uint8 slot = ALE::CHECKVAL<uint8>(L, 4);
+
+        if (!item)
+        {
+            ALE::Push(L, false);
+            return 1;
+        }
+
+        if (bag >= INVENTORY_SLOT_BAG_END)
+        {
+            ALE::Push(L, false);
+            return 1;
+        }
+
+        ItemPosCountVec dest;
+        InventoryResult msg = player->CanStoreItem(bag, slot, dest, item, false);
+        if (msg != EQUIP_ERR_OK)
+        {
+            ALE::Push(L, false);
+            return 1;
+        }
+
+        player->StoreItem(dest, item, true);
+        ALE::CHECKOBJ<ALEObject>(L, 2)->Invalidate();
+        ALE::Push(L, true);
+        return 1;
+    }
+
+    /**
      * Sends a Broadcast Message to the [Player]
      *
      * @param string message
